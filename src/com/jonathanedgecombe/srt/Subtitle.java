@@ -30,6 +30,14 @@ public class Subtitle {
 		this.endTime = endTime;
 	}
 	
+	public int getStartTimeAsSeconds() {
+		return startTime.getTimestampAsSeconds();
+	}
+	
+	public int getEndTimeAsSeconds() {
+		return endTime.getTimestampAsSeconds();
+	}
+	
 	public void clearLines() {
 		lines.clear();
 	}

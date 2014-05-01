@@ -63,4 +63,8 @@ public class Timestamp {
 	public void setMilliseconds(int milliseconds) {
 		this.milliseconds = milliseconds;
 	}
+	
+	public int getTimestampAsSeconds() {
+		return seconds + minutes * 60 + hours * 60 * 60;
+	}
 }
