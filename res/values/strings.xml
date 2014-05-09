@@ -4,6 +4,8 @@
     
     <string name="tap_to_begin">Tap to begin</string>
     
-    <string name="glass_voice_trigger">caption this</string>
+    <string name="glass_movie_trigger">caption this</string>
+    
+    <string name="glass_music_trigger">show me lyrics</string>
 
 </resources>
