@@ -15,5 +15,13 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp"
         android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/caption_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_horizontal|bottom"
+        android:text=""
+        android:textSize="20sp" />
 
 </RelativeLayout>

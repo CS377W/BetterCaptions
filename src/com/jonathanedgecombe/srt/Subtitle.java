@@ -38,6 +38,14 @@ public class Subtitle {
 		return endTime.getTimestampAsSeconds();
 	}
 	
+	public long getStartTimeAsMilliseconds() {
+		return startTime.getTimestampAsMilliseconds();
+	}
+	
+	public long getEndTimeAsMilliseconds() {
+		return endTime.getTimestampAsMilliseconds();
+	}
+	
 	public void clearLines() {
 		lines.clear();
 	}

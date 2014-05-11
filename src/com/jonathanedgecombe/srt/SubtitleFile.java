@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 public class SubtitleFile {
 	private final List<Subtitle> subtitles;
+	
+	
 
 	/* Create a new SubtitleFile. */
 	public SubtitleFile() {
@@ -23,7 +25,7 @@ public class SubtitleFile {
 		subtitles = new ArrayList<>();
 
 		Scanner scanner = new Scanner(in);
-
+		
 		while (scanner.hasNextLine()) {
 			/* We assign our own ID's, ignore the ID given in the file. */
 			scanner.nextLine();
@@ -76,17 +78,38 @@ public class SubtitleFile {
 	public List<Subtitle> getSubtitles() {
 		return subtitles;
 	}
-
-	public Subtitle getSubtitleForSeconds(int seconds) {
-		// TODO: do we need to make this more efficient?
-		for (Subtitle subtitle : subtitles) {
-			if (subtitle.getStartTimeAsSeconds() <= seconds
-					&& seconds < subtitle.getEndTimeAsSeconds()) {
-				return subtitle;
-			}
-		}
-		return null;
-	}
+	
+        public int indexOfSubtitleForSeconds(int seconds) {
+            	int closestOvershot = -1;
+            	int closestOvershotSec = Integer.MAX_VALUE;
+            
+        	int min = 0;
+        	int max = subtitles.size() - 1;
+        	while (min <= max) {
+        	    int mid = (min + max) / 2;
+        
+        	    Subtitle subtitle = subtitles.get(mid);
+        	    int secondsStart = subtitle.getStartTimeAsSeconds();
+        	    int secondsEnd = subtitle.getEndTimeAsSeconds();
+        
+        	    if (secondsStart <= seconds && seconds <= secondsEnd) {
+        		return mid;
+        	    }
+        
+        	    if (seconds < secondsStart) {
+        		max = mid - 1;
+        	    } else if (seconds > secondsEnd) {
+        		min = mid + 1;
+        	    }
+        	    
+        	    if (seconds < secondsStart && secondsStart < closestOvershotSec) {
+        		closestOvershotSec = secondsStart;
+        		closestOvershot = mid;
+        	    }
+        	}
+        	
+        	return closestOvershot;
+        }
 
 	public String compile() {
 		String string = "";

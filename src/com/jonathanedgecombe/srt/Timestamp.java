@@ -1,6 +1,6 @@
 package com.jonathanedgecombe.srt;
 
-public class Timestamp {
+public class Timestamp implements Comparable<Timestamp> {
 	private int hours, minutes, seconds, milliseconds;
 	
 	/* Create a new timestamp at the given time. */
@@ -66,5 +66,26 @@ public class Timestamp {
 	
 	public int getTimestampAsSeconds() {
 		return seconds + minutes * 60 + hours * 60 * 60;
+	}
+	
+	public long getTimestampAsMilliseconds() {
+		return (long)(getTimestampAsSeconds() * 1000 + getMilliseconds());
+	}
+
+	@Override
+	public int compareTo(Timestamp another) {
+	    if (getHours() != another.getHours())
+		return getHours() - another.getHours();
+	    
+	    if (getMinutes() != another.getMinutes())
+		return getMinutes() - another.getMinutes();
+	    
+	    if (getSeconds() != another.getSeconds())
+		return getSeconds() - another.getSeconds();
+	    
+	    if (getMilliseconds() != another.getMilliseconds())
+		return getMilliseconds() - another.getMilliseconds();
+	    
+	    return 0;
 	}
 }
