@@ -20,8 +20,7 @@ public class SubtitleFile {
 	}
 
 	/* Load an existing SubtitleFile from a File. */
-	public SubtitleFile(InputStream in) throws IOException,
-			InvalidTimestampFormatException {
+	public SubtitleFile(String in) throws InvalidTimestampFormatException {
 		subtitles = new ArrayList<>();
 
 		Scanner scanner = new Scanner(in);
@@ -46,6 +45,7 @@ public class SubtitleFile {
 			while (!line.equals("")) {
 				subtitle.addLine(line);
 
+				if (!scanner.hasNextLine()) break;
 				line = scanner.nextLine();
 			}
 

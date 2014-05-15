@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
@@ -18,9 +20,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
+import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 import com.firebase.client.*;
 import com.google.android.glass.touchpad.Gesture;
@@ -30,6 +42,8 @@ import com.jonathanedgecombe.srt.Subtitle;
 import com.jonathanedgecombe.srt.SubtitleFile;
 
 public class StartCaptionsActivity extends Activity {
+    
+    private static final int NUDGE = 1;
     
     private SubtitleFile subtitleFile = null;
     private String movieTitle;
@@ -75,13 +89,19 @@ public class StartCaptionsActivity extends Activity {
 		 String newMovieTitle = (String)((Map)value).get("title");
 	         Integer newMovieTimeInSeconds = Integer.valueOf(((Long) ((Map) value).get("time")).intValue());
 
-	         if (newMovieTitle != movieTitle) {
+	         Log.d("CS377W", "onDataChange complete");
+	         if (!newMovieTitle.equals(movieTitle)) {
 	             movieTitle = newMovieTitle;
+	             subtitleFile = null;
+	             Log.d("CS377W", "loading SRT");
 	             loadSRT();
 	         }
 	         
-	         movieCurTimeInSeconds = newMovieTimeInSeconds;
-	         scheduleSubtitles();
+	         movieCurTimeInSeconds = newMovieTimeInSeconds + NUDGE; //whatever...
+	         if (subtitleFile != null) {
+	             Log.d("CS377W", "scheduleSubtitles");
+	             scheduleSubtitles();
+	         }
 	     }
 
 	     @Override
@@ -92,13 +112,7 @@ public class StartCaptionsActivity extends Activity {
     }
     
     private void loadSRT() {
-	try {
-	    subtitleFile = new SubtitleFile(getAssets().open(movieTitle + ".srt"));
-	} catch (InvalidTimestampFormatException e) {
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+	(new Thread(new SRTFetcher())).start();
     }
     
     private void scheduleSubtitles() {
@@ -199,7 +213,7 @@ public class StartCaptionsActivity extends Activity {
 	for (String str : subtitle.getLines()) {
 	    toShow += str + "\n";
 	}
-	tv.setText(toShow);
+	tv.setText(Html.fromHtml(toShow));
     }
     
     
@@ -288,4 +302,57 @@ public class StartCaptionsActivity extends Activity {
 	}
 	return false;
     }
+    
+    public class SRTFetcher implements Runnable {
+	@Override
+	public void run() {
+	    try {
+		Log.d("CS377W", "starting to run");
+		
+		String webPage = "http://cs377w.briebunge.com/assets/subtitles/" + movieTitle + ".srt";
+		String name = "cs377w";
+		String password = "wearables";
+
+		String authString = name + ":" + password;
+		System.out.println("auth string: " + authString);
+		byte[] authEncBytes = Base64.encode(authString.getBytes(), Base64.DEFAULT);
+		String authStringEnc = new String(authEncBytes);
+		System.out.println("Base64 encoded auth string: " + authStringEnc);
+
+		URL url = new URL(webPage);
+		URLConnection urlConnection = url.openConnection();
+		urlConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+		InputStream is = urlConnection.getInputStream();
+		InputStreamReader isr = new InputStreamReader(is);
+
+		int numCharsRead;
+		char[] charArray = new char[1024];
+		StringBuffer sb = new StringBuffer();
+		while ((numCharsRead = isr.read(charArray)) > 0) {
+			sb.append(charArray, 0, numCharsRead);
+		}
+
+		Log.d("CS377W", "done downloading SRT");
+		String result = sb.toString();
+		subtitleFile = new SubtitleFile(result);
+		Log.d("CS377W", "done creating SubtitleFile");
+		subtitleLoadedHandler.obtainMessage().sendToTarget();
+		
+		
+	    } catch (MalformedURLException e) {
+		e.printStackTrace();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    } catch (InvalidTimestampFormatException e) {
+		e.printStackTrace();
+	    }
+	}
+    }
+    
+    public Handler subtitleLoadedHandler = new Handler() {
+	public void handleMessage(Message msg) {
+	    Log.d("CS377W", "handle message");
+	    sync();
+	}
+    };
 }
