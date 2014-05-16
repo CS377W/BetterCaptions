@@ -309,7 +309,7 @@ public class StartCaptionsActivity extends Activity {
 	    try {
 		Log.d("CS377W", "starting to run");
 		
-		String webPage = "http://cs377w.briebunge.com/assets/subtitles/" + movieTitle + ".srt";
+		String webPage = "http://cs377w.briebunge.com/subtitle.php?movie=" + movieTitle;
 		String name = "cs377w";
 		String password = "wearables";
 
