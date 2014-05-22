@@ -35,7 +35,7 @@
                 android:resource="@xml/voice_trigger_movie_captions" />
         </activity>
         
-        <activity android:name=".LyricsActivity" android:label="Sync">
+        <activity android:name="cs377w.bettercaptions.lyrics.LyricsActivity" android:label="Sync">
             <intent-filter>
                 <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
             </intent-filter>
@@ -45,7 +45,17 @@
                 android:resource="@xml/voice_trigger_music_trigger" />
         </activity>
         
-        <activity android:name=".FindMeLyricsBySpeechActivity" android:label="Speech">
+        <activity android:name="cs377w.bettercaptions.lyrics.FindMeLyricsBySpeechActivity" android:label="Speech">
+            <intent-filter>
+                <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.google.android.glass.VoiceTrigger"
+                android:resource="@xml/voice_trigger_music_trigger" />
+        </activity>
+        
+        <activity android:name="cs377w.bettercaptions.lyrics.Send" android:label="Listen">
             <intent-filter>
                 <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
             </intent-filter>

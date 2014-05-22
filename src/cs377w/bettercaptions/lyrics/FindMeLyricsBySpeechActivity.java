@@ -1,4 +1,4 @@
-package cs377w.bettercaptions;
+package cs377w.bettercaptions.lyrics;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -29,6 +29,10 @@ import com.nuance.nmdp.speechkit.Recognizer;
 import com.nuance.nmdp.speechkit.SpeechError;
 import com.nuance.nmdp.speechkit.SpeechKit;
 
+import cs377w.bettercaptions.R;
+import cs377w.bettercaptions.R.id;
+import cs377w.bettercaptions.R.layout;
+import cs377w.bettercaptions.R.raw;
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;

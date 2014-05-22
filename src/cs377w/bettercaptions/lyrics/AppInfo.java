@@ -1,4 +1,4 @@
-package cs377w.bettercaptions;
+package cs377w.bettercaptions.lyrics;
 
 public class AppInfo
 {

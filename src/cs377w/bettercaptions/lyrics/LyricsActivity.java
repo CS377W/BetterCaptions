@@ -1,4 +1,4 @@
-package cs377w.bettercaptions;
+package cs377w.bettercaptions.lyrics;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +17,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import cs377w.bettercaptions.R;
+import cs377w.bettercaptions.R.id;
+import cs377w.bettercaptions.R.layout;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
