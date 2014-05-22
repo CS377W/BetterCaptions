@@ -25,6 +25,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -56,6 +57,24 @@ public class StartCaptionsActivity extends Activity {
     private Subtitle curSubtitle;
     private List<Subtitle> curSubtitles;
     private GestureDetector mGestureDetector;
+    private ProgressBar progressBar;
+    private Handler progressHandler = new Handler();
+    
+    private void setMovieCurTimeInSeconds(Integer time) {
+	movieCurTimeInSeconds = time;
+	
+	if (curSubtitles == null) return;
+	
+	progressHandler.post(new Runnable() {
+	    @Override
+	    public void run() {
+		Subtitle last = curSubtitles.get(curSubtitles.size() - 1);
+		int progressAmount = (int)(((double)movieCurTimeInSeconds / last.getEndTimeAsSeconds()) * 100);
+		System.out.println(progressAmount);
+		progressBar.setProgress(progressAmount);
+	    }
+	});
+    }
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +84,7 @@ public class StartCaptionsActivity extends Activity {
 	
 	tv = (TextView) findViewById(R.id.caption_content);
 	tvIndicator = (TextView) findViewById(R.id.caption_indicator);
+	progressBar = (ProgressBar) findViewById(R.id.progressBar);
 	
 	movieRef = new Firebase("https://fiery-fire-3139.firebaseio.com/movie");
 	movieTitle = null;
@@ -97,7 +117,7 @@ public class StartCaptionsActivity extends Activity {
 	             loadSRT();
 	         }
 	         
-	         movieCurTimeInSeconds = newMovieTimeInSeconds + NUDGE; //whatever...
+	         setMovieCurTimeInSeconds(newMovieTimeInSeconds + NUDGE); //whatever...
 	         if (subtitleFile != null) {
 	             Log.d("CS377W", "scheduleSubtitles");
 	             scheduleSubtitles();
@@ -145,7 +165,7 @@ public class StartCaptionsActivity extends Activity {
 	
 	int i = curSubtitleIndex;
 	displaySubtitle(curSubtitles.get(i));
-	movieCurTimeInSeconds = curSubtitles.get(i).getEndTimeAsSeconds();
+	setMovieCurTimeInSeconds(curSubtitles.get(i).getEndTimeAsSeconds());
 
 	scheduleUpcomingSubtitles(i + 1);
     }
@@ -178,7 +198,7 @@ public class StartCaptionsActivity extends Activity {
 	    mHandler.obtainMessage().sendToTarget();
 	    
 	    curSubtitleIndex = index;
-	    movieCurTimeInSeconds = curSubtitle.getStartTimeAsSeconds();
+	    setMovieCurTimeInSeconds(curSubtitle.getStartTimeAsSeconds());
 	    
 	    // Schedule off task
 	    SubtitleTimerTask taskEnd = new SubtitleTimerTask(-1);

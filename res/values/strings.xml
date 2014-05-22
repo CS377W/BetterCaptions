@@ -6,6 +6,6 @@
     
     <string name="glass_movie_trigger">caption this</string>
     
-    <string name="glass_music_trigger">show me lyrics</string>
+    <string name="glass_music_trigger">find me lyrics</string>
 
 </resources>
