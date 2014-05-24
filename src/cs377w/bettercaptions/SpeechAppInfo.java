@@ -1,6 +1,6 @@
-package cs377w.bettercaptions.lyrics;
+package cs377w.bettercaptions;
 
-public class AppInfo
+public class SpeechAppInfo
 {
     /**
      * The login parameters should be specified in the following manner:

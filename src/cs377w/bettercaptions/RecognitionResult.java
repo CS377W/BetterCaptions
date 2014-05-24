@@ -1,4 +1,4 @@
-package cs377w.bettercaptions.lyrics;
+package cs377w.bettercaptions;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

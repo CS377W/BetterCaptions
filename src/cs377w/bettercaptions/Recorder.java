@@ -1,4 +1,4 @@
-package cs377w.bettercaptions.lyrics;
+package cs377w.bettercaptions;
 
 /*
  * Reference: http://stackoverflow.com/questions/5139739/android-audiorecord-wont-initialize-2nd-time
@@ -66,8 +66,7 @@ public class Recorder implements Runnable {
     private class Sender implements Runnable {
 	@Override
 	public void run() {
-	    android.os.Process
-		    .setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
+	    android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
 
 	    int bufferRead = 0;
 	    int bufferSize = RecorderSingleton.instance.getBufferSize();

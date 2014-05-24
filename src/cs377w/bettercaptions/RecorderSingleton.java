@@ -1,4 +1,4 @@
-package cs377w.bettercaptions.lyrics;
+package cs377w.bettercaptions;
 
 /*
  * Reference: http://stackoverflow.com/questions/5139739/android-audiorecord-wont-initialize-2nd-time

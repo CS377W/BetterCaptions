@@ -7,14 +7,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
-    </uses-permission>
-    <uses-permission android:name="android.permission.VIBRATE" >
-    </uses-permission>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
-    </uses-permission>
-    <uses-permission android:name="android.permission.BLUETOOTH" >
-    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <uses-sdk
         android:minSdkVersion="19"
@@ -35,7 +31,7 @@
                 android:resource="@xml/voice_trigger_movie_captions" />
         </activity>
         
-        <activity android:name="cs377w.bettercaptions.lyrics.LyricsActivity" android:label="Sync">
+        <activity android:name="cs377w.bettercaptions.FindMeLyricsFromSourceActivity" android:label="by syncing">
             <intent-filter>
                 <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
             </intent-filter>
@@ -45,7 +41,7 @@
                 android:resource="@xml/voice_trigger_music_trigger" />
         </activity>
         
-        <activity android:name="cs377w.bettercaptions.lyrics.FindMeLyricsBySpeechActivity" android:label="Speech">
+        <activity android:name="cs377w.bettercaptions.FindMeLyricsBySpeechActivity" android:label="by speaking">
             <intent-filter>
                 <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
             </intent-filter>
@@ -55,7 +51,7 @@
                 android:resource="@xml/voice_trigger_music_trigger" />
         </activity>
         
-        <activity android:name="cs377w.bettercaptions.lyrics.Send" android:label="Listen">
+        <activity android:name="cs377w.bettercaptions.FindMeLyricsByListeningActivity" android:label="by listening">
             <intent-filter>
                 <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
             </intent-filter>
